@@ -1,5 +1,5 @@
 import fs from "fs";
-import { parseMarkdown } from "./parser.js";
+import { parseMarkdown, wrapStyled } from "./parser.js";
 
 const args = process.argv.slice(2);
 const inputFile = args[0];
@@ -12,11 +12,12 @@ if (!inputFile) {
 }
 
 const markdown = fs.readFileSync(inputFile, "utf-8");
-const html = parseMarkdown(markdown);
+const bodyHtml = parseMarkdown(markdown);
+const fullHtml = wrapStyled(bodyHtml);
 
 if (outputFile) {
-  fs.writeFileSync(outputFile, html);
+  fs.writeFileSync(outputFile, fullHtml);
   console.log(`Written to ${outputFile}`);
 } else {
-  console.log(html);
+  console.log(fullHtml);
 }
